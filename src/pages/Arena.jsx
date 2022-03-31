@@ -124,7 +124,9 @@ function Arena() {
         }, 3000);
       }
     });
-  }, [socket, cleanUpFunc, owner, roomId]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [socket]);
 
   useEffect(() => {
     if (user === currentDrawer) {
