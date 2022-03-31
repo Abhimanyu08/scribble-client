@@ -56,7 +56,7 @@ function Welcome() {
   };
 
   const onCopy = async () => {
-    await navigator.clipboard.writeText(`${CURL}/${roomId}`);
+    await navigator.clipboard.writeText(`${CURL}/join/${roomId}`);
     writeAlert({ type: "warning", message: "Link copied" });
   };
 
@@ -99,7 +99,7 @@ function Welcome() {
         <span className="input-group input-group-sm justify-center">
           <label className="bg-black text-white px-2">Room Link:</label>
           <span className="input input-sm input-bordered bg-white">
-            {`${CURL}/${roomId}`}
+            {`${CURL}/join/${roomId}`}
           </span>
           <span className="btn btn-sm custom" onClick={onCopy}>
             Copy
