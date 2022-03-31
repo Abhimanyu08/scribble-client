@@ -5,6 +5,7 @@ import AlertContext from "../context/AlertContext";
 import { useNavigate } from "react-router-dom";
 import uid from "../utils/uid";
 const SURL = process.env.REACT_APP_SERVER_URL;
+const CURL = process.env.REACT_APP_CLIENT_URL;
 
 function Welcome() {
   const [user, setUser] = useState("");
@@ -55,7 +56,7 @@ function Welcome() {
   };
 
   const onCopy = async () => {
-    await navigator.clipboard.writeText(`http://192.168.1.7:3000/${roomId}`);
+    await navigator.clipboard.writeText(`${CURL}/${roomId}`);
     writeAlert({ type: "warning", message: "Link copied" });
   };
 
