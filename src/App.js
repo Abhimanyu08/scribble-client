@@ -5,7 +5,6 @@ import Welcome from "./pages/Welcome";
 import Arena from "./pages/Arena";
 import Room from "./pages/Room";
 import Join from "./pages/Join";
-import DrawingBoard from "./pages/DrawingBoard";
 
 function App() {
   return (
