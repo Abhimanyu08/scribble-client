@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.btn.custom {
+  background-color: black;
+  text-transform: capitalize;
+}
+
+#root {
+  background-color: dimgray;
+}
+
+.btn.tool {
+  background-color: black;
+}
+.btn.game {
+  background-color: rgb(252 211 77);
+  text-transform: capitalize;
+  color: black;
+  font-weight: 700;
+}
