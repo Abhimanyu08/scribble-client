@@ -120,7 +120,7 @@ function Arena() {
 
       if (owner) {
         setTimeout(() => {
-          socket.emit("nextChance", params.room_id, false);
+          socket.emit("nextChance", roomId, false);
         }, 3000);
       }
     });
@@ -141,6 +141,8 @@ function Arena() {
       clearInterval(timeout);
       if (owner) socket.emit("timeout", params.room_id, guessed);
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timer, guessed]);
 
   const wordToBlanks = (word) => {

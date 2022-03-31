@@ -1,10 +1,4 @@
-import React, {
-  useEffect,
-  useRef,
-  useState,
-  useContext,
-  useLayoutEffect,
-} from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
 import PaintContext from "../context/PaintContext";
 import extractColors from "../utils/extractColors";
 import CustomEvent from "../utils/CustomEvent";

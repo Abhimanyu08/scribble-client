@@ -87,12 +87,6 @@ function Welcome() {
           Create Room
         </div>
       )}
-      <div
-        className="btn btn-xs w-fit custom"
-        onClick={() => navigate("/drawingboard")}
-      >
-        Draw alone
-      </div>
       {alert ? (
         <div className={`alert alert-${alert.type} w-fit p-2 text-xs`}>
           {alert.message}
