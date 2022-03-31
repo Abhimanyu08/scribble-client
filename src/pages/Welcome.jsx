@@ -99,7 +99,7 @@ function Welcome() {
         <span className="input-group input-group-sm justify-center">
           <label className="bg-black text-white px-2">Room Link:</label>
           <span className="input input-sm input-bordered bg-white">
-            {`http://192.168.1.7:3000/${roomId}`}
+            {`${CURL}/${roomId}`}
           </span>
           <span className="btn btn-sm custom" onClick={onCopy}>
             Copy
