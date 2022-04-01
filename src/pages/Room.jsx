@@ -39,17 +39,21 @@ function Room() {
     socket.emit("info", params.room_id, { rounds, time });
     // navigate(`/room/${params.room_id}/arena`);
   };
-
+  const onCopy = async () => {
+    await navigator.clipboard.writeText(
+      `${process.env.REACT_APP_CLIENT_URL}/join/${params.room_id}`
+    );
+  };
   return (
     <div className="flex flex-row justify-center h-screen items-center gap-5">
-      <div className="flex flex-col h-fit items-center justify-center gap-2">
+      <div className="flex flex-col h-full items-center justify-center gap-2">
         {owner ? (
           <>
             <div className="form-control gap-2">
               <div className="flex gap-1">
                 <label
                   htmlFor="rounds"
-                  className="flex items-center bg-amber-400 text-black px-2 font-semibold h-10 rounded-md text-center"
+                  className="flex items-center bg-amber-600 text-black px-2 font-semibold h-10 rounded-md text-center"
                 >
                   Rounds
                 </label>
@@ -65,7 +69,7 @@ function Room() {
               <div className="flex gap-1">
                 <label
                   htmlFor="rounds"
-                  className="flex items-center bg-amber-400 text-black px-2 font-semibold h-10 rounded-md text-center"
+                  className="flex items-center bg-amber-600 text-black px-2 font-semibold h-10 rounded-md text-center"
                 >
                   Time Per Guess
                 </label>
@@ -87,6 +91,21 @@ function Room() {
               Start Game
             </div>
           </>
+        ) : (
+          <></>
+        )}
+        {owner ? (
+          <span className="flex items-center">
+            <label className="bg-amber-300 text-black border-2 border-black rounded-md font-bold h-8 text-center px-2 rounded-r-none">
+              Room Link:
+            </label>
+            <span className="font-semibold text-black bg-amber-100 border-2 border-black h-8 px-2">
+              {`${process.env.REACT_APP_CLIENT_URL}/join/${params.room_id}`}
+            </span>
+            <span className="btn btn-sm custom rounded-l-none" onClick={onCopy}>
+              Copy
+            </span>
+          </span>
         ) : (
           <></>
         )}
