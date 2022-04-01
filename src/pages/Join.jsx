@@ -17,6 +17,8 @@ function Join() {
       setJoined(true);
       navigate(`/room/${params.room_id}`);
     });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [socket]);
 
   const onJoinRoom = () => {

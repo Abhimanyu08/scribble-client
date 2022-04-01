@@ -4,7 +4,6 @@ import AlertContext from "../context/AlertContext";
 // import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from "react-router-dom";
 import uid from "../utils/uid";
-const SURL = process.env.REACT_APP_SERVER_URL;
 const CURL = process.env.REACT_APP_CLIENT_URL;
 
 function Welcome() {
@@ -38,6 +37,8 @@ function Welcome() {
         navigate(`/room/${roomId}`);
       });
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, roomId, socket]);
 
   const onCreateRoom = async () => {
