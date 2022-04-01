@@ -31,7 +31,7 @@ function Arena() {
   const [lastreveal, setLastReveal] = useState(0);
   const [timeout, setTimeoutFunc] = useState(null);
   const [score, setScore] = useState({});
-  const [leaderboard, setLeaderBoard] = useState(null);
+  const [leaderboard, setLeaderBoard] = useState({});
   const [showScore, setShowScore] = useState(false);
   const [round, setRound] = useState(0);
   const [guessed, setGuessed] = useState(0);
@@ -39,7 +39,7 @@ function Arena() {
   const navigate = useNavigate();
   const params = useParams();
 
-  const cleanUpFunc = (scores, currentDrawer, words, currentRound) => {
+  const cleanUpFunc = (currentDrawer, words, currentRound) => {
     //this function takes the new gameInfo and cleans up the state for a new round
     if (currentRound === rounds + 1) {
       setDeclarWinner(true);
@@ -49,6 +49,7 @@ function Arena() {
       type: "SET_DRAWER",
       payload: currentDrawer,
     });
+    if (currentRound === 1) setLeaderBoard({});
     setShowScore(false);
     setSelected(false);
     // setInfo(info);
@@ -61,7 +62,6 @@ function Arena() {
     setBlank("");
     setRevealed(0);
     setChars(0);
-    setLeaderBoard(scores);
     setGuessed(0);
     setRound(currentRound);
     setDeclarWinner(false);
@@ -106,12 +106,21 @@ function Arena() {
       setScore((prev) => {
         return { ...prev, [winner]: score };
       });
+      setLeaderBoard((prev) => {
+        return { ...prev, [winner]: (prev[winner] || 0) + score };
+      });
       setGuessed((prev) => prev + 1);
       setMessages((prev) => [...prev, { author: "", message }]);
     });
 
-    socket.on("roundFinished", (scores, drawerScore, cd) => {
-      setLeaderBoard(scores);
+    socket.on("roundFinished", (drawerScore, cd) => {
+      setLeaderBoard((prev) => {
+        return {
+          ...prev,
+          [cd]: (prev[cd] || 0) + drawerScore,
+        };
+      });
+
       setScore((prev) => {
         return { ...prev, [cd]: drawerScore };
       });
@@ -132,18 +141,13 @@ function Arena() {
     if (user === currentDrawer) {
       if (lastreveal - timer === time / 5) {
         revealSlowly();
-        socket.emit("blank", params.room_id, blank);
+        socket.emit("blank", roomId, blank);
       }
     }
-    if (timer === 0) {
+    if (timer === 0 || (guessed === active.length - 1 && timer !== time)) {
       clearInterval(timeout);
-      if (owner) socket.emit("timeout", params.room_id, guessed);
+      if (owner) socket.emit("timeout", roomId, guessed, active.length - 1);
     }
-    if (guessed === active.length - 1 && timer !== time) {
-      clearInterval(timeout);
-      if (owner) socket.emit("timeout", params.room_id, guessed);
-    }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timer, guessed]);
 
@@ -188,7 +192,7 @@ function Arena() {
   const onGuessSumbit = (e) => {
     if (e.key === "Enter") {
       if (checkGuess(guess)) {
-        socket.emit("guessed", params.room_id, user, timer);
+        socket.emit("guessed", params.room_id, user, timer, time);
         setGuess("");
         return;
       }
@@ -236,8 +240,7 @@ function Arena() {
           </p>
           {sortByScore(active, leaderboard).map((member, idx) => (
             <p key={idx} className="font-semibold">
-              {`${idx + 1}. ${member}`} -{" "}
-              {leaderboard ? leaderboard[member] : 0}
+              {`${idx + 1}. ${member}`} - {leaderboard[member] || 0}
             </p>
           ))}
         </div>
@@ -246,12 +249,12 @@ function Arena() {
         <div className="flex flex-col items-center gap-2 basis-8/12 h-full relative">
           <Canvas />
           {!selected ? (
-            <div className="flex flex-row items-center gap-2 justify-center h-3/4 w-full absolute top-0 left-0 bg-black opacity-85">
+            <div className="flex flex-row items-center gap-2 justify-center h-3/4 w-full absolute top-0 left-0 bg-black">
               {user === currentDrawer ? (
                 words?.map((word, idx) => (
                   <div
                     key={idx}
-                    className="btn btn-xs lg:btn-md custom"
+                    className="btn btn-xs lg:btn-md game"
                     onClick={onWordSelect}
                   >
                     {word}
@@ -286,7 +289,7 @@ function Arena() {
                     key={idx}
                     className="flex items-center gap-2 font-semibold text-2xl text-rose-700 justify-start w-max"
                   >
-                    {idx + 1}. {member}- {leaderboard[member]}
+                    {idx + 1}. {member}- {leaderboard[member] || 0}
                     {idx === 0 ? <FaCrown className="text-amber-400" /> : ""}
                   </p>
                 ))}
@@ -308,7 +311,10 @@ function Arena() {
               <ToolSelect />
               <SizeSelect />
               <PaintSelect />
-              <div className="btn btn-sm custom" onClick={onClear}>
+              <div
+                className="btn btn-sm game border-2 border-black"
+                onClick={onClear}
+              >
                 Clear
               </div>
             </div>

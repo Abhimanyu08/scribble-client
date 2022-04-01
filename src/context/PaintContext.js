@@ -12,7 +12,7 @@ export const PaintProvider = ({ children }) => {
     owner: false,
     currentDrawer: "",
     roomId: "",
-    socket: Object.create(null),
+    socket: null,
     active: [],
     time: 0,
     rounds: 0,
@@ -23,31 +23,31 @@ export const PaintProvider = ({ children }) => {
     const newSocket = io(`${process.env.REACT_APP_SERVER_URL}`);
     newSocket.on("connect", () => {
       console.log("Socket connection established from client");
-    });
 
-    newSocket.on("color", (color) => {
-      dispatch({
-        type: "SET_COLOR",
-        payload: color,
+      newSocket.on("color", (color) => {
+        dispatch({
+          type: "SET_COLOR",
+          payload: color,
+        });
       });
-    });
 
-    newSocket.on("tool", (tool) => {
-      dispatch({
-        type: "SET_TOOL",
-        payload: tool,
+      newSocket.on("tool", (tool) => {
+        dispatch({
+          type: "SET_TOOL",
+          payload: tool,
+        });
       });
-    });
-    newSocket.on("size", (size) => {
-      dispatch({
-        type: "SET_SIZE",
-        payload: size,
+      newSocket.on("size", (size) => {
+        dispatch({
+          type: "SET_SIZE",
+          payload: size,
+        });
       });
-    });
 
-    dispatch({
-      type: "SET_SOCKET",
-      payload: newSocket,
+      dispatch({
+        type: "SET_SOCKET",
+        payload: newSocket,
+      });
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

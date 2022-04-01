@@ -3,8 +3,12 @@
 @tailwind utilities;
 
 .btn.custom {
-  background-color: black;
   text-transform: capitalize;
+  border-width: 2px;
+  border-color: black;
+  font-weight: 700;
+  color: black;
+  background-color: rgb(252 211 77);
 }
 
 #root {
