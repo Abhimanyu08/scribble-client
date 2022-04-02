@@ -2,17 +2,20 @@ import React, { useContext, useEffect, useState } from "react";
 import AlertContext from "../context/AlertContext";
 import { useNavigate, useParams } from "react-router-dom";
 import PaintContext from "../context/PaintContext";
+import Spinner from "../components/Spinner";
 
 function Join() {
   const { dispatch, socket } = useContext(PaintContext);
   const { alert, writeAlert } = useContext(AlertContext);
   const [user, setUser] = useState("");
+  const [connected, setConnected] = useState(false);
   const [joined, setJoined] = useState(true);
   const navigate = useNavigate();
   const params = useParams();
 
   useEffect(() => {
     if (!socket) return;
+    setConnected(true);
     socket.on("joined", () => {
       setJoined(true);
       navigate(`/room/${params.room_id}`);
@@ -40,7 +43,7 @@ function Join() {
     socket.emit("addParticipant", params.room_id, user);
   };
 
-  return (
+  return connected ? (
     <div className="flex flex-col h-screen justify-center items-center gap-2">
       <div className="flex justify-center gap-1">
         <label
@@ -77,6 +80,8 @@ function Join() {
         <></>
       )}
     </div>
+  ) : (
+    <Spinner />
   );
 }
 

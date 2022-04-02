@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import PaintContext from "../context/PaintContext";
 import AlertContext from "../context/AlertContext";
+import Spinner from "../components/Spinner";
 // import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from "react-router-dom";
 import uid from "../utils/uid";
@@ -8,6 +9,7 @@ const CURL = process.env.REACT_APP_CLIENT_URL;
 
 function Welcome() {
   const [user, setUser] = useState("");
+  const [connected, setConnected] = useState(false);
   const [joined, setJoined] = useState(true);
   const [roomId] = useState(uid());
   const [display, setDisplay] = useState(false);
@@ -27,7 +29,12 @@ function Welcome() {
       payload: roomId,
     });
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
     if (socket) {
+      setConnected(true);
       socket.on("roomCreated", () => {
         setCreatingRoom(false);
         setDisplay(true);
@@ -39,7 +46,7 @@ function Welcome() {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, roomId, socket]);
+  }, [socket]);
 
   const onCreateRoom = async () => {
     if (!user) {
@@ -64,7 +71,7 @@ function Welcome() {
     socket.emit("addParticipant", roomId, user);
   };
 
-  return (
+  return connected ? (
     <div className="flex flex-col h-screen justify-center items-center gap-2">
       <div className="flex justify-center gap-1">
         <label
@@ -128,6 +135,8 @@ function Welcome() {
         <></>
       )}
     </div>
+  ) : (
+    <Spinner />
   );
 }
 
