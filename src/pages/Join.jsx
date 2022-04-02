@@ -59,12 +59,16 @@ function Join() {
           }}
         />
       </div>
-      <div
-        className={`btn btn-sm w-fit custom ${joined ? "" : "loading"}`}
-        onClick={onJoinRoom}
-      >
-        Join Room
-      </div>
+      {socket ? (
+        <div
+          className={`btn btn-sm w-fit custom ${joined ? "" : "loading"}`}
+          onClick={onJoinRoom}
+        >
+          Join Room
+        </div>
+      ) : (
+        <></>
+      )}
       {alert ? (
         <div className={`alert alert-${alert.type} w-fit p-2 text-xs`}>
           {alert.message}
