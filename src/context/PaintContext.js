@@ -20,7 +20,9 @@ export const PaintProvider = ({ children }) => {
   const [state, dispatch] = useReducer(paintReducer, initialState);
 
   useEffect(() => {
-    const newSocket = io(`${process.env.REACT_APP_SERVER_URL}`);
+    const newSocket = io(`${process.env.REACT_APP_SERVER_URL}`, {
+      transports: ["websocket"],
+    });
     newSocket.on("connect", () => {
       console.log("Socket connection established from client");
 
