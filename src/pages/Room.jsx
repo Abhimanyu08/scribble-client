@@ -53,7 +53,7 @@ function Room() {
               <div className="flex gap-1">
                 <label
                   htmlFor="rounds"
-                  className="flex items-center bg-amber-600 text-black px-2 font-semibold h-10 rounded-md text-center"
+                  className="flex items-center bg-amber-600 text-black px-2 font-semibold h-10 rounded-md text-center border-2 border-black"
                 >
                   Rounds
                 </label>
@@ -69,7 +69,7 @@ function Room() {
               <div className="flex gap-1">
                 <label
                   htmlFor="rounds"
-                  className="flex items-center bg-amber-600 text-black px-2 font-semibold h-10 rounded-md text-center"
+                  className="flex items-center bg-amber-600 text-black px-2 font-semibold h-10 rounded-md text-center border-2 border-black"
                 >
                   Time Per Guess
                 </label>
