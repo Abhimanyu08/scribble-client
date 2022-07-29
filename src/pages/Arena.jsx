@@ -49,7 +49,7 @@ function Arena() {
 			type: "SET_DRAWER",
 			payload: currentDrawer,
 		});
-		if (currentRound === 1) setLeaderBoard({});
+		// if (currentRound === 1) setLeaderBoard({});
 		setShowScore(false);
 		setSelected(false);
 		// setInfo(info);
